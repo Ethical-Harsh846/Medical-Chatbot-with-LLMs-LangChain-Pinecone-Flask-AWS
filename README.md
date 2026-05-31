@@ -1,132 +1,155 @@
-# Medical-Chatbot-with-LLMs-LangChain-Pinecone-Flask-AWS
-# Build-a-Complete-Medical-Chatbot-with-LLMs-LangChain-Pinecone-Flask-AWS
-
-# How to run?
-### STEPS:
-
-Clone the repository
-
+# Medical Chatbot with LLMs, LangChain, Pinecone, Flask & AWS
+ 
+> Built with **Groq (LLaMA3)** + **HuggingFace Embeddings** instead of OpenAI — fully free to run locally.
+ 
+---
+ 
+## How to Run
+ 
+### Step 1 — Clone the repository
+ 
 ```bash
-git clonehttps://github.com/Ethical-Harsh846/Medical-Chatbot-with-LLMs-LangChain-Pinecone-Flask-AWS.git
-
+git clone https://github.com/Ethical-Harsh846/Medical-Chatbot-with-LLMs-LangChain-Pinecone-Flask-AWS.git
 ```
-### STEP 01- Create a conda environment after opening the repository
-
+ 
+---
+ 
+### Step 2 — Create and activate a conda environment
+ 
 ```bash
 conda create -n medibot python=3.10 -y
 ```
-
 ```bash
 conda activate medibot
 ```
-
-
-### STEP 02- install the requirements
+ 
+---
+ 
+### Step 3 — Install the requirements
+ 
 ```bash
 pip install -r requirements.txt
 ```
-
-
-### Create a `.env` file in the root directory and add your Pinecone & openai credentials as follows:
-
+ 
+---
+ 
+### Step 4 — Create a `.env` file in the root directory
+ 
+Add your Pinecone and Groq credentials as follows:
+ 
 ```ini
-PINECONE_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-OPENAI_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+PINECONE_API_KEY=your_pinecone_api_key_here
+GROQ_API_KEY=your_groq_api_key_here
 ```
-
-
+ 
+> **Get your free API keys:**
+> - Pinecone → [pinecone.io](https://www.pinecone.io/)
+> - Groq → [console.groq.com](https://console.groq.com/) (free, no credit card needed)
+ 
+---
+ 
+### Step 5 — Store embeddings to Pinecone
+ 
 ```bash
-# run the following command to store embeddings to pinecone
 python store_index.py
 ```
-
+ 
+> This uses **HuggingFace embeddings** (`sentence-transformers/all-MiniLM-L6-v2`) — no OpenAI key required.
+ 
+---
+ 
+### Step 6 — Run the application
+ 
 ```bash
-# Finally run the following command
 python app.py
 ```
-
-Now,
-```bash
-open up localhost:
+ 
+Then open your browser and go to:
 ```
-
-
-### Techstack Used:
-
-- Python
-- LangChain
-- Flask
-- GPT
-- Pinecone
-
-
-
-# AWS-CICD-Deployment-with-Github-Actions
-
-## 1. Login to AWS console.
-
-## 2. Create IAM user for deployment
-
-	#with specific access
-
-	1. EC2 access : It is virtual machine
-
-	2. ECR: Elastic Container registry to save your docker image in aws
-
-
-	#Description: About the deployment
-
-	1. Build docker image of the source code
-
-	2. Push your docker image to ECR
-
-	3. Launch Your EC2 
-
-	4. Pull Your image from ECR in EC2
-
-	5. Lauch your docker image in EC2
-
-	#Policy:
-
-	1. AmazonEC2ContainerRegistryFullAccess
-
-	2. AmazonEC2FullAccess
-
-	
-## 3. Create ECR repo to store/save docker image
-    - Save the URI: 315865595366.dkr.ecr.us-east-1.amazonaws.com/medicalbot
-
-	
-## 4. Create EC2 machine (Ubuntu) 
-
-## 5. Open EC2 and Install docker in EC2 Machine:
-	
-	
-	#optinal
-
-	sudo apt-get update -y
-
-	sudo apt-get upgrade
-	
-	#required
-
-	curl -fsSL https://get.docker.com -o get-docker.sh
-
-	sudo sh get-docker.sh
-
-	sudo usermod -aG docker ubuntu
-
-	newgrp docker
-	
-# 6. Configure EC2 as self-hosted runner:
-    setting>actions>runner>new self hosted runner> choose os> then run command one by one
-
-
-# 7. Setup github secrets:
-
-   - AWS_ACCESS_KEY_ID
-   - AWS_SECRET_ACCESS_KEY
-   - AWS_DEFAULT_REGION
-   - ECR_REPO
-   - PINECONE_API_KEY
-   - OPENAI_API_KEY
+http://localhost:8080
+```
+ 
+---
+ 
+## Tech Stack Used
+ 
+| Component | Technology |
+|---|---|
+| Language | Python 3.10 |
+| Framework | Flask |
+| LLM | Groq — LLaMA3 8B (`llama-3.1-8b-instant`) |
+| Embeddings | HuggingFace — `all-MiniLM-L6-v2` |
+| Vector Database | Pinecone |
+| Orchestration | LangChain |
+| Deployment | AWS EC2 + Docker + GitHub Actions |
+ 
+---
+ 
+## Why Groq Instead of OpenAI?
+ 
+| | OpenAI | Groq |
+|---|---|---|
+| Free tier | ❌ No (credits expired) | ✅ Yes |
+| Credit card required | ✅ Yes | ❌ No |
+| Speed | Fast | Very fast |
+| Model used | GPT-3.5/4 | LLaMA3 8B |
+ 
+---
+ 
+## AWS CI/CD Deployment with GitHub Actions
+ 
+### 1. Login to AWS Console
+ 
+### 2. Create IAM User for Deployment
+ 
+Required access:
+- **EC2** — virtual machine to run the app
+- **ECR** — Elastic Container Registry to store Docker image
+Required policies:
+```
+AmazonEC2ContainerRegistryFullAccess
+AmazonEC2FullAccess
+```
+ 
+### 3. Create ECR Repository
+ 
+Save the URI after creation, example:
+```
+315865595366.dkr.ecr.us-east-1.amazonaws.com/medicalbot
+```
+ 
+### 4. Create EC2 Machine (Ubuntu)
+ 
+### 5. Install Docker on EC2
+ 
+```bash
+# Optional but recommended
+sudo apt-get update -y
+sudo apt-get upgrade -y
+ 
+# Required
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker ubuntu
+newgrp docker
+```
+ 
+### 6. Configure EC2 as Self-Hosted Runner
+ 
+Go to your GitHub repo:
+```
+Settings → Actions → Runners → New self-hosted runner → Choose OS → Run commands one by one
+```
+ 
+### 7. Set Up GitHub Secrets
+ 
+Go to `Settings → Secrets and variables → Actions` and add:
+ 
+```
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_DEFAULT_REGION
+ECR_REPO
+PINECONE_API_KEY
+GROQ_API_KEY
+```
