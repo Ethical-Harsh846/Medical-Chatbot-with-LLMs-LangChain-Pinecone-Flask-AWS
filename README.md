@@ -115,7 +115,7 @@ AmazonEC2FullAccess
  
 Save the URI after creation, example:
 ```
-315865595366.dkr.ecr.us-east-1.amazonaws.com/medicalbot
+592573568611.dkr.ecr.ap-southeast-2.amazonaws.com/medicalbot
 ```
  
 ### 4. Create EC2 Machine (Ubuntu)
